@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -22,16 +23,7 @@ namespace StudentJournalASPNET
             Test.Text = "";
             PeselValidatord.Text = "";
             InitializeDropDownLists();
-            if (IsPostBack)
-            {
-                SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["StudentsConnectionString"].ConnectionString);
-                conn.Open();
-                string selectQuery = "SELECT S.[id],S.[Pesel],S.[Name],S.[Surname],G.[name],S.[BirthDate],C.[CityName] FROM[Students].[dbo].[Student] S JOIN City C ON S.CityId = C.CityId JOIN Gender G ON S.GenderId = G.id";
-                SqlCommand cmd = new SqlCommand(selectQuery, conn);
-                SqlDataSource1.SelectCommand = cmd.CommandText;
-                cmd.ExecuteNonQuery();
-                conn.Close();
-            }
+            StudentExistLabel.Text = "";
         }
 
         protected void Application_Start(object sender, EventArgs e)
@@ -54,55 +46,37 @@ namespace StudentJournalASPNET
 
         }
 
-        private void ShowStudentList()
-        {
-            MultiView1.ActiveViewIndex += 1;
-        }
-
         protected void SaveStudentButton_Click(object sender, EventArgs e)
         {
             string date = DayDropDownList.Text + " " + MonthDropDownList.Text + " " + YearDropDownList.Text;
 
-            Student student = new Student(PeselTextBox.Text, NameTextBox.Text, SurnameTextBox.Text, date, CityTextBox.Text, GenderDropDownList.Text);
+            Student student = new Student(PeselTextBox.Text, NameTextBox.Text, SurnameTextBox.Text, date, CityTextBox.Text, GenderDropDownList.Text,ClassChoose.Text);
 
             addStudentResult = studentRepositoryCheck.CheckAddStudent(student);
             if (addStudentResult == AddStudentResult.SuccessToAddStudent)
             {
                 try
                 {
+                    SqlConnection connect = new SqlConnection(ConfigurationManager.ConnectionStrings["StudentsConnectionString"].ConnectionString);
+                    connect.Open();
+                    CheckIfStudentExist(connect,student);
                     if (!studentIsExist)
                     {
+                        CheckIfCityExist(connect,student);
+                        string insertQuery = "insert into Student(Pesel,Name,Surname,GenderId,BirthDate,CityId,ClassId)"
+                            +"values(@studentPesel,@studentName,@studentSurname,@studentGender,@studentBirthDate"
+                            +",(Select CityId from City where CityName LIKE '" + student.City + "'" + "),(Select ClassId from StudentClass Where ClassName LIKE '" + student.Classes + "'))";
+                        SqlCommand cmd = new SqlCommand(insertQuery, connect);
+                        cmd.Parameters.AddWithValue("@studentPesel", student.Pesel);
+                        cmd.Parameters.AddWithValue("@studentName", student.Name);
+                        cmd.Parameters.AddWithValue("@studentSurname", student.Surname);
+                        cmd.Parameters.AddWithValue("@studentGender", student.Gender);
+                        cmd.Parameters.AddWithValue("@studentBirthDate", student.BirthDate);
+                        cmd.ExecuteNonQuery();
 
-                        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["StudentsConnectionString"].ConnectionString);
-                        conn.Open();
-                        string checkuser = "select count(*) from Student where Pesel='" + PeselTextBox.Text + "'";
-                        SqlCommand checkCmd = new SqlCommand(checkuser, conn);
-                        int temp = Convert.ToInt32(checkCmd.ExecuteScalar().ToString());
-
-                        if (temp == 1)
-                        {
-
-                            Response.Write("Student Already Exist");
-                            studentIsExist = true;
-                        }
-
-                        if (!studentIsExist)
-                        {
-
-                            string insertQuery = "insert into Student(Pesel,Name,Surname,GenderId,BirthDate,CityId)values (@studentPesel,@studentName,@studentSurname,@studentGender,@studentBirthDate,@studentCity)";
-                            SqlCommand cmd = new SqlCommand(insertQuery, conn);
-                            cmd.Parameters.AddWithValue("@studentPesel", student.Pesel);
-                            cmd.Parameters.AddWithValue("@studentName", student.Name);
-                            cmd.Parameters.AddWithValue("@studentSurname", student.Surname);
-                            cmd.Parameters.AddWithValue("@studentGender", student.Gender);
-                            cmd.Parameters.AddWithValue("@studentBirthDate", student.BirthDate);
-                            cmd.Parameters.AddWithValue("@studentCity", 3);
-                            cmd.ExecuteNonQuery();
-
-                            Response.Write("Student registeration Successfully!!!thank you");
-
-                        }
-                        conn.Close();
+                        StudentExistLabel.ForeColor = Color.Green;
+                        StudentExistLabel.Text = "Student został dodany poprawnie";
+                        connect.Close();
                     }
 
                 }
@@ -150,14 +124,45 @@ namespace StudentJournalASPNET
 
         }
 
-        protected void ShowStudentListButton_Click(object sender, EventArgs e)
+        void CheckIfStudentExist(SqlConnection connect,Student student)
         {
-             ShowStudentList();
+            string checkuser = "select count(*) from Student where Pesel LIKE'" + student.Pesel + "'";
+            SqlCommand checkUserCmd = new SqlCommand(checkuser, connect);
+            int checkStudentExist = Convert.ToInt32(checkUserCmd.ExecuteScalar().ToString());
+
+            if (checkStudentExist == 1)
+            {
+
+                StudentExistLabel.ForeColor = Color.Red;
+                StudentExistLabel.Text = "Taki student już istnieje";
+                studentIsExist = true;
+            }
+            else
+            {
+                studentIsExist = false;
+            }
+
         }
 
-        protected void BackToAddStudentButton_Click(object sender, EventArgs e)
+        void CheckIfCityExist(SqlConnection connect,Student student)
         {
-            MultiView1.ActiveViewIndex -= 1;
+            string checkCityQuery = "select Count(*) from City where CityName LIKE'" + student.City + "'";
+            SqlCommand checkCityCmd = new SqlCommand(checkCityQuery, connect);
+            int checkCityExist = Convert.ToInt32(checkCityCmd.ExecuteScalar().ToString());
+            if(checkCityExist < 1)
+            {
+                string insertCityQuery = "insert into City(CityName) values(@CityName)";
+                SqlCommand insertCityCmd = new SqlCommand(insertCityQuery, connect);
+                insertCityCmd.Parameters.AddWithValue("@CityName",student.City);
+                insertCityCmd.ExecuteNonQuery();
+            }
+
+
+        }
+
+        protected void ShowStudentListButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("StudentList.aspx");
         }
     }
 }
