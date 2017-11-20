@@ -6,7 +6,7 @@ using System.Web;
 namespace StudentJournalASPNET
 {
 
-    public enum AddStudentResult
+    public enum StudentCheckResult
     {
         FailedToAddStudent = 0,
         SuccessToAddStudent
@@ -14,25 +14,24 @@ namespace StudentJournalASPNET
 
     public interface IStudentReposiotory
     {
-        AddStudentResult CheckAddStudent(Student studentToAdd);
+        StudentCheckResult CheckStudentInfo(Student studentToAdd);
     }
 
     public class StudentRepository : IStudentReposiotory
     {
-
-        AddStudentResult addStudentResult;
+        StudentCheckResult addStudentResult;
 
         Pesel pesel;
 
-        public AddStudentResult CheckAddStudent(Student studentToAdd)
+        public StudentCheckResult CheckStudentInfo(Student studentToAdd)
         {
             if (!Pesel.TryParse(studentToAdd.Pesel, out pesel))
             {
-                addStudentResult = AddStudentResult.FailedToAddStudent;
+                addStudentResult = StudentCheckResult.FailedToAddStudent;
             }
             else
             {
-                addStudentResult = AddStudentResult.SuccessToAddStudent;
+                addStudentResult = StudentCheckResult.SuccessToAddStudent;
             }
             return addStudentResult;
         }

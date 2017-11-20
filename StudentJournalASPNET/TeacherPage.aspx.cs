@@ -17,7 +17,7 @@ namespace StudentJournalASPNET
     {
         bool studentIsExist = false;
         StudentRepository studentRepositoryCheck = new StudentRepository();
-        AddStudentResult addStudentResult;
+        StudentCheckResult addStudentResult;
         protected void Page_Load(object sender, EventArgs e)
         {
             Test.Text = "";
@@ -43,7 +43,16 @@ namespace StudentJournalASPNET
 
         private void ClearTextBoxes()
         {
-
+            PeselTextBox.Text = "";
+            NameTextBox.Text = "";
+            SurnameTextBox.Text = "";
+            GenderDropDownList.Text = "Mężczyzna";
+            CityTextBox.Text = "";
+            DayDropDownList.Text = "01";
+            MonthDropDownList.Text = "01";
+            YearDropDownList.Text = "1950";
+            ClassChoose.Text = "A";
+            
         }
 
         protected void SaveStudentButton_Click(object sender, EventArgs e)
@@ -52,8 +61,8 @@ namespace StudentJournalASPNET
 
             Student student = new Student(PeselTextBox.Text, NameTextBox.Text, SurnameTextBox.Text, date, CityTextBox.Text, GenderDropDownList.Text,ClassChoose.Text);
 
-            addStudentResult = studentRepositoryCheck.CheckAddStudent(student);
-            if (addStudentResult == AddStudentResult.SuccessToAddStudent)
+            addStudentResult = studentRepositoryCheck.CheckStudentInfo(student);
+            if (addStudentResult == StudentCheckResult.SuccessToAddStudent)
             {
                 try
                 {
@@ -86,7 +95,7 @@ namespace StudentJournalASPNET
                 }
 
             }
-            else if(addStudentResult == AddStudentResult.FailedToAddStudent)
+            else if(addStudentResult == StudentCheckResult.FailedToAddStudent)
             {
                 PeselValidatord.Text = "Błędyny Pesel";
             }

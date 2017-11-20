@@ -31,3 +31,40 @@ D:\c++ VisualStudio Programy\StudentJournalASPNET\StudentJournalASPNET\bin\Micro
 D:\c++ VisualStudio Programy\StudentJournalASPNET\StudentJournalASPNET\obj\Debug\StudentJournalASPNET.csprojResolveAssemblyReference.cache
 D:\c++ VisualStudio Programy\StudentJournalASPNET\StudentJournalASPNET\obj\Debug\StudentJournalASPNET.dll
 D:\c++ VisualStudio Programy\StudentJournalASPNET\StudentJournalASPNET\obj\Debug\StudentJournalASPNET.pdb
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\ApplicationInsights.config
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\roslyn\csc.exe
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\roslyn\System.Collections.Immutable.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\roslyn\System.Reflection.Metadata.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\roslyn\vbc.exe
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\roslyn\VBCSCompiler.exe
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\roslyn\VBCSCompiler.exe.config
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\StudentJournalASPNET.dll.config
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\StudentJournalASPNET.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\StudentJournalASPNET.pdb
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.AI.Agent.Intercept.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.AI.DependencyCollector.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.AI.PerfCounterCollector.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.AI.ServerTelemetryChannel.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.AI.Web.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.AI.WindowsServer.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.ApplicationInsights.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.AI.DependencyCollector.xml
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.AI.ServerTelemetryChannel.xml
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.AI.Web.xml
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.AI.WindowsServer.xml
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.ApplicationInsights.xml
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\obj\Debug\StudentJournalASPNET.csprojResolveAssemblyReference.cache
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\obj\Debug\StudentJournalASPNET.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\obj\Debug\StudentJournalASPNET.pdb
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\EntityFramework.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\EntityFramework.SqlServer.dll
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\EntityFramework.xml
+D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\EntityFramework.SqlServer.xml
