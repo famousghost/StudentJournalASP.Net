@@ -12,12 +12,15 @@ namespace StudentJournalASPNET
 {
     public partial class StudentList : System.Web.UI.Page
     {
-        StudentRepository studentRepositoryCheck = new StudentRepository();
+        StudentRepository studentRepository;
         StudentCheckResult updateStudentResult;
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            studentRepository = new StudentRepository();
             InitializeDropDownLists();
-            ShowAllStudents();
+            StudentGridView.DataSource = studentRepository.SelectAllStudents();
+            StudentGridView.DataBind();
         }
 
         private void InitializeDropDownLists()
@@ -54,7 +57,8 @@ namespace StudentJournalASPNET
 
         protected void SelectClassList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ShowAllStudents(SelectClassList.Text);
+            StudentGridView.DataSource = studentRepository.SelectAllStudentsWhere(SelectClassList.Text);
+            StudentGridView.DataBind();
         }
 
         protected void StudentAddButton_Click(object sender, EventArgs e)
@@ -64,56 +68,7 @@ namespace StudentJournalASPNET
 
         protected void ShowAllButton_Click(object sender, EventArgs e)
         {
-            ShowAllStudents();
-        }
-
-        private void ShowAllStudents()
-        {
-            StudentsEntitiesModel studentEntity = new StudentsEntitiesModel();
-            var selectedStudent = (from student in studentEntity.Student
-                                   join city in studentEntity.City
-                                   on student.CityId equals city.CityId
-                                   join gender in studentEntity.Gender
-                                   on student.GenderId equals gender.id
-                                   join studentClass in studentEntity.StudentClass
-                                   on student.ClassId equals studentClass.ClassId
-                                   select new
-                                   {
-                                       Pesel = student.Pesel,
-                                       Imię = student.Name,
-                                       Nazwisko = student.Surname,
-                                       Płeć = gender.name,
-                                       DataUrodzenia = student.BirthDate,
-                                       Miasto = city.CityName,
-                                       Klasa = studentClass.ClassName
-                                   }).ToList();
-
-            StudentGridView.DataSource = selectedStudent;
-            StudentGridView.DataBind();
-        }
-
-        private void ShowAllStudents(string ClassText)
-        {
-            StudentsEntitiesModel studentEntity = new StudentsEntitiesModel();
-            var selectedStudent = (from student in studentEntity.Student
-                                   join city in studentEntity.City
-                                   on student.CityId equals city.CityId
-                                   join gender in studentEntity.Gender
-                                   on student.GenderId equals gender.id
-                                   join studentClass in studentEntity.StudentClass
-                                   on student.ClassId equals studentClass.ClassId
-                                   select new
-                                   {
-                                       Pesel = student.Pesel,
-                                       Imię = student.Name,
-                                       Nazwisko = student.Surname,
-                                       Płeć = gender.name,
-                                       DataUrodzenia = student.BirthDate,
-                                       Miasto = city.CityName,
-                                       Klasa = studentClass.ClassName
-                                   }).ToList();
-
-            StudentGridView.DataSource = selectedStudent.Where(s => s.Klasa == ClassText);
+            StudentGridView.DataSource = studentRepository.SelectAllStudents();
             StudentGridView.DataBind();
         }
 
@@ -122,7 +77,7 @@ namespace StudentJournalASPNET
             string date = DayDropDownList.Text + " " + MonthDropDownList.Text + " " + YearDropDownList.Text;
 
             Student student = new Student(PeselTextBox.Text, NameTextBox.Text, SurnameTextBox.Text, date, CityTextBox.Text, GenderDropDownList.Text, ClassChoose.Text);
-            updateStudentResult = studentRepositoryCheck.CheckStudentInfo(student);
+            updateStudentResult = studentRepository.CheckStudentInfo(student);
             if (updateStudentResult == StudentCheckResult.SuccessToAddStudent)
             {
                 StudentsEntitiesModel studentEntity = new StudentsEntitiesModel();
@@ -138,12 +93,17 @@ namespace StudentJournalASPNET
         {
             GridViewRow studentRow = StudentGridView.SelectedRow;
 
-            PeselTextBox.Text = studentRow.Cells[1].Text;
-            NameTextBox.Text = studentRow.Cells[2].Text;
-            SurnameTextBox.Text = studentRow.Cells[3].Text;
-            GenderDropDownList.Text = studentRow.Cells[4].Text;
-            CityTextBox.Text = studentRow.Cells[6].Text;
-            ClassChoose.Text = studentRow.Cells[7].Text;
+            Student student = studentRepository.SelectStudentByPesel(studentRow.Cells[1].Text);
+            PeselTextBox.Text = student.Pesel;
+            NameTextBox.Text = student.Name;
+            SurnameTextBox.Text = student.Surname;
+            GenderDropDownList.Text = student.Gender;
+            CityTextBox.Text = student.City;
+            ClassChoose.Text = student.Classes;
+
+
+
+
             if (MultiView1.ActiveViewIndex < 1)
                 MultiView1.ActiveViewIndex++;
         }

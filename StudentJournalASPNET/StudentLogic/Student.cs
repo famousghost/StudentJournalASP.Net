@@ -13,7 +13,7 @@ namespace StudentJournalASPNET
         public string Surname { get; set; }
         public string BirthDate { get;  set; }
         public string City { get; set; }
-        public int Gender { get; set; }
+        public string Gender { get; set; }
         public string Classes { get; set; }
 
         //constructor
@@ -25,14 +25,7 @@ namespace StudentJournalASPNET
             this.BirthDate = BirthDate;
             this.City = City;
             this.Classes = Classes;
-            if(Gender == "Mężczyzna")
-            {
-                this.Gender = 1;
-            }
-            else
-            {
-                this.Gender = 2;
-            }
+            this.Gender = Gender;
             
         }
 
