@@ -93,8 +93,7 @@
                             <asp:Label ID="PeselLabel" runat="server" Text="Pesel"></asp:Label>
                         </td>
                         <td class="auto-style2">
-                            <asp:TextBox ID="PeselTextBox" runat="server" Width="240px" Font-Names="Arial"></asp:TextBox>
-                            <asp:Label ID="PeselValidatord" runat="server" ForeColor="Red"></asp:Label>
+                            <asp:Label ID="PeselLabelText" runat="server" Text="Label"></asp:Label>
                         </td>
                     </tr>
                     <tr>

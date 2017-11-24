@@ -23,7 +23,11 @@ namespace StudentJournalASPNET
 
         Student SelectStudentByPesel(string pesel);
 
-        void InsertStudent();
+        void InsertStudent(Student student);
+
+        void UpdateStudent(Student student);
+
+        void DeleteStudent(Student student);
     }
 
     public class StudentRepository : IStudentReposiotory
@@ -112,9 +116,42 @@ namespace StudentJournalASPNET
             return studentList;
         }
 
-        public void InsertStudent()
+        public void InsertStudent(Student student)
         {
-            
+            bool cityIdExist = (studentEntity.City.FirstOrDefault(c => c.CityName == student.City) == null);
+
+            int genderId = studentEntity.Gender.FirstOrDefault(g => g.name == student.Gender).id;
+
+            int classId = studentEntity.StudentClass.FirstOrDefault(ci => ci.ClassName == student.Classes).ClassId;
+
+            if(cityIdExist)
+            {
+                using (StudentsEntitiesModel studentEntityModel = new StudentsEntitiesModel())
+                {
+                    Model.City citySql = new Model.City();
+                    citySql.CityName = student.City;
+                    studentEntityModel.City.Add(citySql);
+                    studentEntityModel.SaveChanges();
+                }
+            }
+
+            int cityId = studentEntity.City.FirstOrDefault(c => c.CityName == student.City).CityId;
+
+            using (StudentsEntitiesModel studentEntityModel = new StudentsEntitiesModel())
+            {
+                Model.Student studentSql = new Model.Student();
+                studentSql.Pesel = student.Pesel;
+                studentSql.Name = student.Name;
+                studentSql.Surname = student.Surname;
+                studentSql.BirthDate = student.BirthDate;
+                studentSql.CityId = cityId;
+                studentSql.GenderId = genderId;
+                studentSql.ClassId = classId;
+                studentEntityModel.Student.Add(studentSql);
+                studentEntityModel.SaveChanges();
+            }
+
+
         }
 
         public Student SelectStudentByPesel(string pesel)
@@ -142,6 +179,52 @@ namespace StudentJournalASPNET
             thisStudent = new Student(selectedStudentsWhere.Pesel, selectedStudentsWhere.Imię, selectedStudentsWhere.Nazwisko, selectedStudentsWhere.DataUrodzenia, selectedStudentsWhere.Miasto, selectedStudentsWhere.Płeć, selectedStudentsWhere.Klasa);
 
             return thisStudent;
+        }
+
+        public void UpdateStudent(Student student)
+        {
+            bool cityIdExist = (studentEntity.City.FirstOrDefault(c => c.CityName == student.City) == null);
+
+            int genderId = studentEntity.Gender.FirstOrDefault(g => g.name == student.Gender).id;
+
+            int classId = studentEntity.StudentClass.FirstOrDefault(ci => ci.ClassName == student.Classes).ClassId;
+
+            if (cityIdExist)
+            {
+                using (StudentsEntitiesModel studentEntityModel = new StudentsEntitiesModel())
+                {
+                    Model.City citySql = new Model.City();
+                    citySql.CityName = student.City;
+                    studentEntityModel.City.Add(citySql);
+                    studentEntityModel.SaveChanges();
+                }
+            }
+
+            int cityId = studentEntity.City.FirstOrDefault(c => c.CityName == student.City).CityId;
+
+            using (StudentsEntitiesModel studentEntityModel = new StudentsEntitiesModel())
+            {
+                var studentSql = studentEntityModel.Student.FirstOrDefault(s => s.Pesel == student.Pesel);
+                studentSql.Pesel = student.Pesel;
+                studentSql.Name = student.Name;
+                studentSql.Surname = student.Surname;
+                studentSql.BirthDate = student.BirthDate;
+                studentSql.CityId = cityId;
+                studentSql.GenderId = genderId;
+                studentSql.ClassId = classId;
+                studentEntityModel.SaveChanges();
+            }
+
+        }
+
+        public void DeleteStudent(Student student)
+        {
+            using (StudentsEntitiesModel studentEntityModel = new StudentsEntitiesModel())
+            {
+                var studentSql = studentEntityModel.Student.FirstOrDefault(s => s.Pesel == student.Pesel);
+                studentEntityModel.Student.Remove(studentSql);
+                studentEntityModel.SaveChanges();
+            }
         }
     }
 }

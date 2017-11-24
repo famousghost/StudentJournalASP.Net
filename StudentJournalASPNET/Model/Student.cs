@@ -11,8 +11,7 @@ namespace StudentJournalASPNET.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Student
     {
         public Student()
@@ -21,7 +20,6 @@ namespace StudentJournalASPNET.Model
         }
     
         public int id { get; set; }
-        [Key]
         public string Pesel { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }

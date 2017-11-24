@@ -16,7 +16,7 @@ namespace StudentJournalASPNET
     public partial class TeacherPage : System.Web.UI.Page
     {
         bool studentIsExist = false;
-        StudentRepository studentRepositoryCheck = new StudentRepository();
+        StudentRepository studentRepository = new StudentRepository();
         StudentCheckResult addStudentResult;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -61,7 +61,7 @@ namespace StudentJournalASPNET
 
             Student student = new Student(PeselTextBox.Text, NameTextBox.Text, SurnameTextBox.Text, date, CityTextBox.Text, GenderDropDownList.Text,ClassChoose.Text);
 
-            addStudentResult = studentRepositoryCheck.CheckStudentInfo(student);
+            addStudentResult = studentRepository.CheckStudentInfo(student);
             if (addStudentResult == StudentCheckResult.SuccessToAddStudent)
             {
                 try
@@ -71,30 +71,9 @@ namespace StudentJournalASPNET
                     CheckIfStudentExist(connect,student);
                     if (!studentIsExist)
                     {
-                        int genderId;
-                        CheckIfCityExist(connect,student);
-                        string insertQuery = "insert into Student(Pesel,Name,Surname,GenderId,BirthDate,CityId,ClassId)"
-                            +"values(@studentPesel,@studentName,@studentSurname,@studentGender,@studentBirthDate"
-                            +",(Select CityId from City where CityName LIKE '" + student.City + "'" + "),(Select ClassId from StudentClass Where ClassName LIKE '" + student.Classes + "'))";
-                        SqlCommand cmd = new SqlCommand(insertQuery, connect);
-                        if (student.Gender == "Mężczyzna")
-                        {
-                            genderId = 1;
-                        }
-                        else
-                        {
-                            genderId = 2;
-                        }
-                        cmd.Parameters.AddWithValue("@studentPesel", student.Pesel);
-                        cmd.Parameters.AddWithValue("@studentName", student.Name);
-                        cmd.Parameters.AddWithValue("@studentSurname", student.Surname);
-                        cmd.Parameters.AddWithValue("@studentGender", genderId);
-                        cmd.Parameters.AddWithValue("@studentBirthDate", student.BirthDate);
-                        cmd.ExecuteNonQuery();
-
+                        studentRepository.InsertStudent(student);
                         StudentExistLabel.ForeColor = Color.Green;
                         StudentExistLabel.Text = "Student został dodany poprawnie";
-                        connect.Close();
                     }
 
                 }
