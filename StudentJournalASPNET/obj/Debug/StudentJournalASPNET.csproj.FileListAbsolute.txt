@@ -61,7 +61,6 @@ D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.AI.Web.xml
 D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.AI.WindowsServer.xml
 D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.ApplicationInsights.xml
 D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\obj\Debug\StudentJournalASPNET.csprojResolveAssemblyReference.cache
 D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\obj\Debug\StudentJournalASPNET.dll
 D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\obj\Debug\StudentJournalASPNET.pdb
 D:\GIT\GIT_STUDENT_JOURNAL_ASP\StudentJournalASPNET\bin\EntityFramework.dll

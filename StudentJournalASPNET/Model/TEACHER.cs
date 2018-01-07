@@ -12,18 +12,21 @@ namespace StudentJournalASPNET.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SubjectInfo
+    public partial class TEACHER
     {
-        public SubjectInfo()
+        public TEACHER()
         {
-            this.StudentMarks = new HashSet<StudentMarks>();
-            this.TEACHERs = new HashSet<TEACHER>();
+            this.TEACHERSCLASSes = new HashSet<TEACHERSCLASS>();
+            this.USERS = new HashSet<USER>();
         }
     
-        public int SubjectId { get; set; }
-        public string SubjectName { get; set; }
+        public int teacherId { get; set; }
+        public string teacherName { get; set; }
+        public string teacherSurname { get; set; }
+        public int subjectId { get; set; }
     
-        public virtual ICollection<StudentMarks> StudentMarks { get; set; }
-        public virtual ICollection<TEACHER> TEACHERs { get; set; }
+        public virtual SubjectInfo SubjectInfo { get; set; }
+        public virtual ICollection<TEACHERSCLASS> TEACHERSCLASSes { get; set; }
+        public virtual ICollection<USER> USERS { get; set; }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="StudentsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="StudentsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="City">
           <Key>
             <PropertyRef Name="CityId" />
@@ -66,6 +66,34 @@ warning 6002: The table/view 'Students.dbo.StudentMarks' does not have a primary
           <Property Name="SubjectId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SubjectName" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <EntityType Name="TEACHER">
+          <Key>
+            <PropertyRef Name="teacherId" />
+          </Key>
+          <Property Name="teacherId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="teacherName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="teacherSurname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="subjectId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TEACHERSCLASS">
+          <Key>
+            <PropertyRef Name="TEACHERCLASSID" />
+          </Key>
+          <Property Name="TEACHERCLASSID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TEACHERID" Type="int" Nullable="false" />
+          <Property Name="CLASSID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USERS">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userLogin" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="userPassword" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LVL" Type="int" Nullable="false" />
+          <Property Name="TeacherId" Type="int" />
+          <Property Name="StudentId" Type="int" />
+        </EntityType>
         <Association Name="CityId">
           <End Role="City" Type="Self.City" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -89,6 +117,30 @@ warning 6002: The table/view 'Students.dbo.StudentMarks' does not have a primary
             </Principal>
             <Dependent Role="Student">
               <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentId">
+          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
+          <End Role="USERS" Type="Self.USERS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="USERS">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherId">
+          <End Role="TEACHER" Type="Self.TEACHER" Multiplicity="0..1" />
+          <End Role="USERS" Type="Self.USERS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEACHER">
+              <PropertyRef Name="teacherId" />
+            </Principal>
+            <Dependent Role="USERS">
+              <PropertyRef Name="TeacherId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -140,6 +192,42 @@ warning 6002: The table/view 'Students.dbo.StudentMarks' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="subjectIdFK">
+          <End Role="SubjectInfo" Type="Self.SubjectInfo" Multiplicity="1" />
+          <End Role="TEACHER" Type="Self.TEACHER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubjectInfo">
+              <PropertyRef Name="SubjectId" />
+            </Principal>
+            <Dependent Role="TEACHER">
+              <PropertyRef Name="subjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="teacherClassIdFK">
+          <End Role="StudentClass" Type="Self.StudentClass" Multiplicity="1" />
+          <End Role="TEACHERSCLASS" Type="Self.TEACHERSCLASS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentClass">
+              <PropertyRef Name="ClassId" />
+            </Principal>
+            <Dependent Role="TEACHERSCLASS">
+              <PropertyRef Name="CLASSID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="teacherIdFK">
+          <End Role="TEACHER" Type="Self.TEACHER" Multiplicity="1" />
+          <End Role="TEACHERSCLASS" Type="Self.TEACHERSCLASS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEACHER">
+              <PropertyRef Name="teacherId" />
+            </Principal>
+            <Dependent Role="TEACHERSCLASS">
+              <PropertyRef Name="TEACHERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="StudentsModelStoreContainer">
           <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Gender" EntityType="Self.Gender" Schema="dbo" store:Type="Tables" />
@@ -147,6 +235,9 @@ warning 6002: The table/view 'Students.dbo.StudentMarks' does not have a primary
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StudentClass" EntityType="Self.StudentClass" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubjectInfo" EntityType="Self.SubjectInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TEACHER" EntityType="Self.TEACHER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TEACHERSCLASS" EntityType="Self.TEACHERSCLASS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USERS" EntityType="Self.USERS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StudentMarks" EntityType="Self.StudentMarks" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
 [StudentMarks].[StudentId] AS [StudentId], 
@@ -161,6 +252,14 @@ FROM [dbo].[StudentMarks] AS [StudentMarks]</DefiningQuery>
           <AssociationSet Name="FK__Student__ClassId__47DBAE45" Association="Self.FK__Student__ClassId__47DBAE45">
             <End Role="StudentClass" EntitySet="StudentClass" />
             <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentId" Association="Self.FK_StudentId">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="USERS" EntitySet="USERS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherId" Association="Self.FK_TeacherId">
+            <End Role="TEACHER" EntitySet="TEACHER" />
+            <End Role="USERS" EntitySet="USERS" />
           </AssociationSet>
           <AssociationSet Name="GenderId" Association="Self.GenderId">
             <End Role="Gender" EntitySet="Gender" />
@@ -178,9 +277,20 @@ FROM [dbo].[StudentMarks] AS [StudentMarks]</DefiningQuery>
             <End Role="SubjectInfo" EntitySet="SubjectInfo" />
             <End Role="StudentMarks" EntitySet="StudentMarks" />
           </AssociationSet>
+          <AssociationSet Name="subjectIdFK" Association="Self.subjectIdFK">
+            <End Role="SubjectInfo" EntitySet="SubjectInfo" />
+            <End Role="TEACHER" EntitySet="TEACHER" />
+          </AssociationSet>
+          <AssociationSet Name="teacherClassIdFK" Association="Self.teacherClassIdFK">
+            <End Role="StudentClass" EntitySet="StudentClass" />
+            <End Role="TEACHERSCLASS" EntitySet="TEACHERSCLASS" />
+          </AssociationSet>
+          <AssociationSet Name="teacherIdFK" Association="Self.teacherIdFK">
+            <End Role="TEACHER" EntitySet="TEACHER" />
+            <End Role="TEACHERSCLASS" EntitySet="TEACHERSCLASS" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="StudentsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -225,6 +335,7 @@ FROM [dbo].[StudentMarks] AS [StudentMarks]</DefiningQuery>
           <NavigationProperty Name="Gender" Relationship="Self.GenderId" FromRole="Student" ToRole="Gender" />
           <NavigationProperty Name="StudentClass" Relationship="Self.FK__Student__ClassId__47DBAE45" FromRole="Student" ToRole="StudentClass" />
           <NavigationProperty Name="StudentMarks" Relationship="Self.StudentId" FromRole="Student" ToRole="StudentMarks" />
+          <NavigationProperty Name="USERS" Relationship="StudentsModel.FK_StudentId" FromRole="Student" ToRole="USER" />
         </EntityType>
         <EntityType Name="StudentClass">
           <Key>
@@ -233,6 +344,7 @@ FROM [dbo].[StudentMarks] AS [StudentMarks]</DefiningQuery>
           <Property Name="ClassId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClassName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Student" Relationship="Self.FK__Student__ClassId__47DBAE45" FromRole="StudentClass" ToRole="Student" />
+          <NavigationProperty Name="TEACHERSCLASSes" Relationship="StudentsModel.teacherClassIdFK" FromRole="StudentClass" ToRole="TEACHERSCLASS" />
         </EntityType>
         <EntityType Name="SubjectInfo">
           <Key>
@@ -241,6 +353,7 @@ FROM [dbo].[StudentMarks] AS [StudentMarks]</DefiningQuery>
           <Property Name="SubjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SubjectName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="StudentMarks" Relationship="Self.SubjectId" FromRole="SubjectInfo" ToRole="StudentMarks" />
+          <NavigationProperty Name="TEACHERs" Relationship="StudentsModel.subjectIdFK" FromRole="SubjectInfo" ToRole="TEACHER" />
         </EntityType>
         <EntityType Name="StudentMarks">
           <Key>
@@ -361,7 +474,125 @@ FROM [dbo].[StudentMarks] AS [StudentMarks]</DefiningQuery>
             <End Role="SubjectInfo" EntitySet="SubjectInfo" />
             <End Role="StudentMarks" EntitySet="StudentMarks" />
           </AssociationSet>
+          <EntitySet Name="USERS" EntityType="StudentsModel.USER" />
+          <EntitySet Name="TEACHERs" EntityType="StudentsModel.TEACHER" />
+          <EntitySet Name="TEACHERSCLASSes" EntityType="StudentsModel.TEACHERSCLASS" />
+          <AssociationSet Name="teacherClassIdFK" Association="StudentsModel.teacherClassIdFK">
+            <End Role="StudentClass" EntitySet="StudentClass" />
+            <End Role="TEACHERSCLASS" EntitySet="TEACHERSCLASSes" />
+          </AssociationSet>
+          <AssociationSet Name="subjectIdFK" Association="StudentsModel.subjectIdFK">
+            <End Role="SubjectInfo" EntitySet="SubjectInfo" />
+            <End Role="TEACHER" EntitySet="TEACHERs" />
+          </AssociationSet>
+          <AssociationSet Name="teacherIdFK" Association="StudentsModel.teacherIdFK">
+            <End Role="TEACHER" EntitySet="TEACHERs" />
+            <End Role="TEACHERSCLASS" EntitySet="TEACHERSCLASSes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentId" Association="StudentsModel.FK_StudentId">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="USER" EntitySet="USERS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherId" Association="StudentsModel.FK_TeacherId">
+            <End Role="TEACHER" EntitySet="TEACHERs" />
+            <End Role="USER" EntitySet="USERS" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="USER">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userLogin" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="userPassword" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LVL" Type="Int32" Nullable="false" />
+          <Property Name="TeacherId" Type="Int32" />
+          <Property Name="StudentId" Type="Int32" />
+          <NavigationProperty Name="Student" Relationship="StudentsModel.FK_StudentId" FromRole="USER" ToRole="Student" />
+          <NavigationProperty Name="TEACHER" Relationship="StudentsModel.FK_TeacherId" FromRole="USER" ToRole="TEACHER" />
+        </EntityType>
+        <EntityType Name="TEACHER">
+          <Key>
+            <PropertyRef Name="teacherId" />
+          </Key>
+          <Property Name="teacherId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="teacherName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="teacherSurname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="subjectId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SubjectInfo" Relationship="StudentsModel.subjectIdFK" FromRole="TEACHER" ToRole="SubjectInfo" />
+          <NavigationProperty Name="TEACHERSCLASSes" Relationship="StudentsModel.teacherIdFK" FromRole="TEACHER" ToRole="TEACHERSCLASS" />
+          <NavigationProperty Name="USERS" Relationship="StudentsModel.FK_TeacherId" FromRole="TEACHER" ToRole="USER" />
+        </EntityType>
+        <EntityType Name="TEACHERSCLASS">
+          <Key>
+            <PropertyRef Name="TEACHERCLASSID" />
+          </Key>
+          <Property Name="TEACHERCLASSID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TEACHERID" Type="Int32" Nullable="false" />
+          <Property Name="CLASSID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="StudentClass" Relationship="StudentsModel.teacherClassIdFK" FromRole="TEACHERSCLASS" ToRole="StudentClass" />
+          <NavigationProperty Name="TEACHER" Relationship="StudentsModel.teacherIdFK" FromRole="TEACHERSCLASS" ToRole="TEACHER" />
+        </EntityType>
+        <Association Name="teacherClassIdFK">
+          <End Type="StudentsModel.StudentClass" Role="StudentClass" Multiplicity="1" />
+          <End Type="StudentsModel.TEACHERSCLASS" Role="TEACHERSCLASS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentClass">
+              <PropertyRef Name="ClassId" />
+            </Principal>
+            <Dependent Role="TEACHERSCLASS">
+              <PropertyRef Name="CLASSID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="subjectIdFK">
+          <End Type="StudentsModel.SubjectInfo" Role="SubjectInfo" Multiplicity="1" />
+          <End Type="StudentsModel.TEACHER" Role="TEACHER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubjectInfo">
+              <PropertyRef Name="SubjectId" />
+            </Principal>
+            <Dependent Role="TEACHER">
+              <PropertyRef Name="subjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="teacherIdFK">
+          <End Type="StudentsModel.TEACHER" Role="TEACHER" Multiplicity="1" />
+          <End Type="StudentsModel.TEACHERSCLASS" Role="TEACHERSCLASS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEACHER">
+              <PropertyRef Name="teacherId" />
+            </Principal>
+            <Dependent Role="TEACHERSCLASS">
+              <PropertyRef Name="TEACHERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentId">
+          <End Type="StudentsModel.Student" Role="Student" Multiplicity="0..1" />
+          <End Type="StudentsModel.USER" Role="USER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="USER">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherId">
+          <End Type="StudentsModel.TEACHER" Role="TEACHER" Multiplicity="0..1" />
+          <End Type="StudentsModel.USER" Role="USER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEACHER">
+              <PropertyRef Name="teacherId" />
+            </Principal>
+            <Dependent Role="USER">
+              <PropertyRef Name="TeacherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -432,6 +663,37 @@ FROM [dbo].[StudentMarks] AS [StudentMarks]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="USERS">
+            <EntityTypeMapping TypeName="StudentsModel.USER">
+              <MappingFragment StoreEntitySet="USERS">
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
+                <ScalarProperty Name="LVL" ColumnName="LVL" />
+                <ScalarProperty Name="userPassword" ColumnName="userPassword" />
+                <ScalarProperty Name="userLogin" ColumnName="userLogin" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TEACHERs">
+            <EntityTypeMapping TypeName="StudentsModel.TEACHER">
+              <MappingFragment StoreEntitySet="TEACHER">
+                <ScalarProperty Name="subjectId" ColumnName="subjectId" />
+                <ScalarProperty Name="teacherSurname" ColumnName="teacherSurname" />
+                <ScalarProperty Name="teacherName" ColumnName="teacherName" />
+                <ScalarProperty Name="teacherId" ColumnName="teacherId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TEACHERSCLASSes">
+            <EntityTypeMapping TypeName="StudentsModel.TEACHERSCLASS">
+              <MappingFragment StoreEntitySet="TEACHERSCLASS">
+                <ScalarProperty Name="CLASSID" ColumnName="CLASSID" />
+                <ScalarProperty Name="TEACHERID" ColumnName="TEACHERID" />
+                <ScalarProperty Name="TEACHERCLASSID" ColumnName="TEACHERCLASSID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -446,7 +708,7 @@ FROM [dbo].[StudentMarks] AS [StudentMarks]</DefiningQuery>
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="true" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

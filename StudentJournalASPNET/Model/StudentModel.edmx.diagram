@@ -18,6 +18,15 @@
         <AssociationConnector Association="StudentsModel.FK__Student__ClassId__47DBAE45" ManuallyRouted="false" />
         <AssociationConnector Association="StudentsModel.StudentId" ManuallyRouted="false" />
         <AssociationConnector Association="StudentsModel.SubjectId" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="StudentsModel.USERS" Width="1.5" PointX="8" PointY="1.875" />
+        <EntityTypeShape EntityType="StudentsModel.USER" Width="1.5" PointX="7.875" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentsModel.TEACHER" Width="1.5" PointX="5.25" PointY="7.5" />
+        <EntityTypeShape EntityType="StudentsModel.TEACHERSCLASS" Width="1.5" PointX="7.5" PointY="7.625" />
+        <AssociationConnector Association="StudentsModel.teacherClassIdFK" />
+        <AssociationConnector Association="StudentsModel.subjectIdFK" />
+        <AssociationConnector Association="StudentsModel.teacherIdFK" />
+        <AssociationConnector Association="StudentsModel.FK_StudentId" />
+        <AssociationConnector Association="StudentsModel.FK_TeacherId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

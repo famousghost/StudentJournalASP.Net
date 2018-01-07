@@ -17,6 +17,7 @@ namespace StudentJournalASPNET.Model
         public Student()
         {
             this.StudentMarks = new HashSet<StudentMarks>();
+            this.USERS = new HashSet<USER>();
         }
     
         public int id { get; set; }
@@ -32,5 +33,6 @@ namespace StudentJournalASPNET.Model
         public virtual Gender Gender { get; set; }
         public virtual StudentClass StudentClass { get; set; }
         public virtual ICollection<StudentMarks> StudentMarks { get; set; }
+        public virtual ICollection<USER> USERS { get; set; }
     }
 }

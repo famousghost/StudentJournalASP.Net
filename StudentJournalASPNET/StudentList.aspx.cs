@@ -13,7 +13,6 @@ namespace StudentJournalASPNET
     public partial class StudentList : System.Web.UI.Page
     {
         StudentRepository studentRepository;
-        StudentCheckResult updateStudentResult;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -63,7 +62,7 @@ namespace StudentJournalASPNET
 
         protected void StudentAddButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect("TeacherPage.aspx");
+            Response.Redirect("AdminPages.aspx");
         }
 
         protected void ShowAllButton_Click(object sender, EventArgs e)

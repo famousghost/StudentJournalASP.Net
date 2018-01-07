@@ -32,8 +32,5 @@ namespace StudentJournalASPNET.Model
         public DbSet<StudentClass> StudentClass { get; set; }
         public DbSet<SubjectInfo> SubjectInfo { get; set; }
         public DbSet<StudentMarks> StudentMarks { get; set; }
-        public DbSet<USER> USERS { get; set; }
-        public DbSet<TEACHER> TEACHERs { get; set; }
-        public DbSet<TEACHERSCLASS> TEACHERSCLASSes { get; set; }
     }
 }

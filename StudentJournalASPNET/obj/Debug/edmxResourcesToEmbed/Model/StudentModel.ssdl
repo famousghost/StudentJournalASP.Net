@@ -61,6 +61,34 @@ warning 6002: The table/view 'Students.dbo.StudentMarks' does not have a primary
     <Property Name="SubjectId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="SubjectName" Type="nvarchar" MaxLength="100" Nullable="false" />
   </EntityType>
+  <EntityType Name="TEACHER">
+    <Key>
+      <PropertyRef Name="teacherId" />
+    </Key>
+    <Property Name="teacherId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="teacherName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="teacherSurname" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="subjectId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TEACHERSCLASS">
+    <Key>
+      <PropertyRef Name="TEACHERCLASSID" />
+    </Key>
+    <Property Name="TEACHERCLASSID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TEACHERID" Type="int" Nullable="false" />
+    <Property Name="CLASSID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="USERS">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="userLogin" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="userPassword" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="LVL" Type="int" Nullable="false" />
+    <Property Name="TeacherId" Type="int" />
+    <Property Name="StudentId" Type="int" />
+  </EntityType>
   <Association Name="CityId">
     <End Role="City" Type="Self.City" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -84,6 +112,30 @@ warning 6002: The table/view 'Students.dbo.StudentMarks' does not have a primary
       </Principal>
       <Dependent Role="Student">
         <PropertyRef Name="ClassId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentId">
+    <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
+    <End Role="USERS" Type="Self.USERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="USERS">
+        <PropertyRef Name="StudentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TeacherId">
+    <End Role="TEACHER" Type="Self.TEACHER" Multiplicity="0..1" />
+    <End Role="USERS" Type="Self.USERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TEACHER">
+        <PropertyRef Name="teacherId" />
+      </Principal>
+      <Dependent Role="USERS">
+        <PropertyRef Name="TeacherId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -135,6 +187,42 @@ warning 6002: The table/view 'Students.dbo.StudentMarks' does not have a primary
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="subjectIdFK">
+    <End Role="SubjectInfo" Type="Self.SubjectInfo" Multiplicity="1" />
+    <End Role="TEACHER" Type="Self.TEACHER" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SubjectInfo">
+        <PropertyRef Name="SubjectId" />
+      </Principal>
+      <Dependent Role="TEACHER">
+        <PropertyRef Name="subjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="teacherClassIdFK">
+    <End Role="StudentClass" Type="Self.StudentClass" Multiplicity="1" />
+    <End Role="TEACHERSCLASS" Type="Self.TEACHERSCLASS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StudentClass">
+        <PropertyRef Name="ClassId" />
+      </Principal>
+      <Dependent Role="TEACHERSCLASS">
+        <PropertyRef Name="CLASSID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="teacherIdFK">
+    <End Role="TEACHER" Type="Self.TEACHER" Multiplicity="1" />
+    <End Role="TEACHERSCLASS" Type="Self.TEACHERSCLASS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TEACHER">
+        <PropertyRef Name="teacherId" />
+      </Principal>
+      <Dependent Role="TEACHERSCLASS">
+        <PropertyRef Name="TEACHERID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="StudentsModelStoreContainer">
     <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Gender" EntityType="Self.Gender" Schema="dbo" store:Type="Tables" />
@@ -142,6 +230,9 @@ warning 6002: The table/view 'Students.dbo.StudentMarks' does not have a primary
     <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StudentClass" EntityType="Self.StudentClass" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SubjectInfo" EntityType="Self.SubjectInfo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TEACHER" EntityType="Self.TEACHER" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TEACHERSCLASS" EntityType="Self.TEACHERSCLASS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="USERS" EntityType="Self.USERS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StudentMarks" EntityType="Self.StudentMarks" store:Type="Tables" store:Schema="dbo">
       <DefiningQuery>SELECT 
 [StudentMarks].[StudentId] AS [StudentId], 
@@ -156,6 +247,14 @@ FROM [dbo].[StudentMarks] AS [StudentMarks]</DefiningQuery>
     <AssociationSet Name="FK__Student__ClassId__47DBAE45" Association="Self.FK__Student__ClassId__47DBAE45">
       <End Role="StudentClass" EntitySet="StudentClass" />
       <End Role="Student" EntitySet="Student" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentId" Association="Self.FK_StudentId">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="USERS" EntitySet="USERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TeacherId" Association="Self.FK_TeacherId">
+      <End Role="TEACHER" EntitySet="TEACHER" />
+      <End Role="USERS" EntitySet="USERS" />
     </AssociationSet>
     <AssociationSet Name="GenderId" Association="Self.GenderId">
       <End Role="Gender" EntitySet="Gender" />
@@ -172,6 +271,18 @@ FROM [dbo].[StudentMarks] AS [StudentMarks]</DefiningQuery>
     <AssociationSet Name="SubjectId" Association="Self.SubjectId">
       <End Role="SubjectInfo" EntitySet="SubjectInfo" />
       <End Role="StudentMarks" EntitySet="StudentMarks" />
+    </AssociationSet>
+    <AssociationSet Name="subjectIdFK" Association="Self.subjectIdFK">
+      <End Role="SubjectInfo" EntitySet="SubjectInfo" />
+      <End Role="TEACHER" EntitySet="TEACHER" />
+    </AssociationSet>
+    <AssociationSet Name="teacherClassIdFK" Association="Self.teacherClassIdFK">
+      <End Role="StudentClass" EntitySet="StudentClass" />
+      <End Role="TEACHERSCLASS" EntitySet="TEACHERSCLASS" />
+    </AssociationSet>
+    <AssociationSet Name="teacherIdFK" Association="Self.teacherIdFK">
+      <End Role="TEACHER" EntitySet="TEACHER" />
+      <End Role="TEACHERSCLASS" EntitySet="TEACHERSCLASS" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

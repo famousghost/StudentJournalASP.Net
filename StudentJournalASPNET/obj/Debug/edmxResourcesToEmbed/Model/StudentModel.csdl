@@ -41,6 +41,7 @@
     <NavigationProperty Name="Gender" Relationship="Self.GenderId" FromRole="Student" ToRole="Gender" />
     <NavigationProperty Name="StudentClass" Relationship="Self.FK__Student__ClassId__47DBAE45" FromRole="Student" ToRole="StudentClass" />
     <NavigationProperty Name="StudentMarks" Relationship="Self.StudentId" FromRole="Student" ToRole="StudentMarks" />
+    <NavigationProperty Name="USERS" Relationship="StudentsModel.FK_StudentId" FromRole="Student" ToRole="USER" />
   </EntityType>
   <EntityType Name="StudentClass">
     <Key>
@@ -49,6 +50,7 @@
     <Property Name="ClassId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ClassName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="Student" Relationship="Self.FK__Student__ClassId__47DBAE45" FromRole="StudentClass" ToRole="Student" />
+    <NavigationProperty Name="TEACHERSCLASSes" Relationship="StudentsModel.teacherClassIdFK" FromRole="StudentClass" ToRole="TEACHERSCLASS" />
   </EntityType>
   <EntityType Name="SubjectInfo">
     <Key>
@@ -57,6 +59,7 @@
     <Property Name="SubjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="SubjectName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="StudentMarks" Relationship="Self.SubjectId" FromRole="SubjectInfo" ToRole="StudentMarks" />
+    <NavigationProperty Name="TEACHERs" Relationship="StudentsModel.subjectIdFK" FromRole="SubjectInfo" ToRole="TEACHER" />
   </EntityType>
   <EntityType Name="StudentMarks">
     <Key>
@@ -177,5 +180,123 @@
       <End Role="SubjectInfo" EntitySet="SubjectInfo" />
       <End Role="StudentMarks" EntitySet="StudentMarks" />
     </AssociationSet>
+    <EntitySet Name="USERS" EntityType="StudentsModel.USER" />
+    <EntitySet Name="TEACHERs" EntityType="StudentsModel.TEACHER" />
+    <EntitySet Name="TEACHERSCLASSes" EntityType="StudentsModel.TEACHERSCLASS" />
+    <AssociationSet Name="teacherClassIdFK" Association="StudentsModel.teacherClassIdFK">
+      <End Role="StudentClass" EntitySet="StudentClass" />
+      <End Role="TEACHERSCLASS" EntitySet="TEACHERSCLASSes" />
+    </AssociationSet>
+    <AssociationSet Name="subjectIdFK" Association="StudentsModel.subjectIdFK">
+      <End Role="SubjectInfo" EntitySet="SubjectInfo" />
+      <End Role="TEACHER" EntitySet="TEACHERs" />
+    </AssociationSet>
+    <AssociationSet Name="teacherIdFK" Association="StudentsModel.teacherIdFK">
+      <End Role="TEACHER" EntitySet="TEACHERs" />
+      <End Role="TEACHERSCLASS" EntitySet="TEACHERSCLASSes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentId" Association="StudentsModel.FK_StudentId">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="USER" EntitySet="USERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TeacherId" Association="StudentsModel.FK_TeacherId">
+      <End Role="TEACHER" EntitySet="TEACHERs" />
+      <End Role="USER" EntitySet="USERS" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="USER">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="userLogin" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="userPassword" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="LVL" Type="Int32" Nullable="false" />
+    <Property Name="TeacherId" Type="Int32" />
+    <Property Name="StudentId" Type="Int32" />
+    <NavigationProperty Name="Student" Relationship="StudentsModel.FK_StudentId" FromRole="USER" ToRole="Student" />
+    <NavigationProperty Name="TEACHER" Relationship="StudentsModel.FK_TeacherId" FromRole="USER" ToRole="TEACHER" />
+  </EntityType>
+  <EntityType Name="TEACHER">
+    <Key>
+      <PropertyRef Name="teacherId" />
+    </Key>
+    <Property Name="teacherId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="teacherName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="teacherSurname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="subjectId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="SubjectInfo" Relationship="StudentsModel.subjectIdFK" FromRole="TEACHER" ToRole="SubjectInfo" />
+    <NavigationProperty Name="TEACHERSCLASSes" Relationship="StudentsModel.teacherIdFK" FromRole="TEACHER" ToRole="TEACHERSCLASS" />
+    <NavigationProperty Name="USERS" Relationship="StudentsModel.FK_TeacherId" FromRole="TEACHER" ToRole="USER" />
+  </EntityType>
+  <EntityType Name="TEACHERSCLASS">
+    <Key>
+      <PropertyRef Name="TEACHERCLASSID" />
+    </Key>
+    <Property Name="TEACHERCLASSID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TEACHERID" Type="Int32" Nullable="false" />
+    <Property Name="CLASSID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="StudentClass" Relationship="StudentsModel.teacherClassIdFK" FromRole="TEACHERSCLASS" ToRole="StudentClass" />
+    <NavigationProperty Name="TEACHER" Relationship="StudentsModel.teacherIdFK" FromRole="TEACHERSCLASS" ToRole="TEACHER" />
+  </EntityType>
+  <Association Name="teacherClassIdFK">
+    <End Type="StudentsModel.StudentClass" Role="StudentClass" Multiplicity="1" />
+    <End Type="StudentsModel.TEACHERSCLASS" Role="TEACHERSCLASS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StudentClass">
+        <PropertyRef Name="ClassId" />
+      </Principal>
+      <Dependent Role="TEACHERSCLASS">
+        <PropertyRef Name="CLASSID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="subjectIdFK">
+    <End Type="StudentsModel.SubjectInfo" Role="SubjectInfo" Multiplicity="1" />
+    <End Type="StudentsModel.TEACHER" Role="TEACHER" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SubjectInfo">
+        <PropertyRef Name="SubjectId" />
+      </Principal>
+      <Dependent Role="TEACHER">
+        <PropertyRef Name="subjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="teacherIdFK">
+    <End Type="StudentsModel.TEACHER" Role="TEACHER" Multiplicity="1" />
+    <End Type="StudentsModel.TEACHERSCLASS" Role="TEACHERSCLASS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TEACHER">
+        <PropertyRef Name="teacherId" />
+      </Principal>
+      <Dependent Role="TEACHERSCLASS">
+        <PropertyRef Name="TEACHERID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentId">
+    <End Type="StudentsModel.Student" Role="Student" Multiplicity="0..1" />
+    <End Type="StudentsModel.USER" Role="USER" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="USER">
+        <PropertyRef Name="StudentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TeacherId">
+    <End Type="StudentsModel.TEACHER" Role="TEACHER" Multiplicity="0..1" />
+    <End Type="StudentsModel.USER" Role="USER" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TEACHER">
+        <PropertyRef Name="teacherId" />
+      </Principal>
+      <Dependent Role="USER">
+        <PropertyRef Name="TeacherId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

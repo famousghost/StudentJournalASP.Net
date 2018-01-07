@@ -105,6 +105,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="MainPage.aspx" />
     <Content Include="Model\StudentModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>StudentModel.edmx</DependentUpon>
@@ -135,12 +136,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="StudentList.aspx" />
-    <Content Include="TeacherPage.aspx" />
+    <Content Include="AdminPages.aspx" />
+    <Content Include="TeacherPanel.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainPage.aspx.cs">
+      <DependentUpon>MainPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MainPage.aspx.designer.cs">
+      <DependentUpon>MainPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Model\City.cs">
       <DependentUpon>StudentModel.tt</DependentUpon>
     </Compile>
@@ -177,7 +186,18 @@
     <Compile Include="Model\SubjectInfo.cs">
       <DependentUpon>StudentModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\TEACHER.cs">
+      <DependentUpon>StudentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TEACHERSCLASS.cs">
+      <DependentUpon>StudentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\USER.cs">
+      <DependentUpon>StudentModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SingInLogic\LogIn.cs" />
+    <Compile Include="SingInLogic\LogInApi.cs" />
     <Compile Include="StudentList.aspx.cs">
       <DependentUpon>StudentList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -188,12 +208,21 @@
     <Compile Include="StudentLogic\Pesel.cs" />
     <Compile Include="StudentLogic\Student.cs" />
     <Compile Include="StudentLogic\StudentRepository.cs" />
-    <Compile Include="TeacherPage.aspx.cs">
-      <DependentUpon>TeacherPage.aspx</DependentUpon>
+    <Compile Include="AdminPages.aspx.cs">
+      <DependentUpon>AdminPages.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="TeacherPage.aspx.designer.cs">
-      <DependentUpon>TeacherPage.aspx</DependentUpon>
+    <Compile Include="AdminPages.aspx.designer.cs">
+      <DependentUpon>AdminPages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TeacherLogic\Teacher.cs" />
+    <Compile Include="TeacherLogic\TeacherLogic.cs" />
+    <Compile Include="TeacherPanel.aspx.cs">
+      <DependentUpon>TeacherPanel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TeacherPanel.aspx.designer.cs">
+      <DependentUpon>TeacherPanel.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -17,11 +17,13 @@ namespace StudentJournalASPNET.Model
         public StudentClass()
         {
             this.Student = new HashSet<Student>();
+            this.TEACHERSCLASSes = new HashSet<TEACHERSCLASS>();
         }
     
         public int ClassId { get; set; }
         public string ClassName { get; set; }
     
         public virtual ICollection<Student> Student { get; set; }
+        public virtual ICollection<TEACHERSCLASS> TEACHERSCLASSes { get; set; }
     }
 }
