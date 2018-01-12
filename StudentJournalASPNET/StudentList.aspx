@@ -58,6 +58,9 @@
     
         <asp:MultiView ID="MultiView1" runat="server" ActiveViewIndex="0">
             <asp:View ID="View1" runat="server">
+                <asp:Button ID="LogOutButton" runat="server" OnClick="LogOutButton_Click" Text="Wyloguj" />
+                <br />
+                <br />
                 <asp:Button ID="StudentAddButton" runat="server" OnClick="StudentAddButton_Click" Text="Dodaj Studenta" />
                 <br />
                 <asp:DropDownList ID="SelectClassList" SelectCommand ="Select ClassName from StuentClass" runat="server" AutoPostBack="True" DataSourceID="SqlDataSource1" DataTextField="ClassName" DataValueField="ClassName" OnSelectedIndexChanged="SelectClassList_SelectedIndexChanged">

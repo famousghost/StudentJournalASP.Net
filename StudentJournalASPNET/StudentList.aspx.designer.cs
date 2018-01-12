@@ -40,6 +40,15 @@ namespace StudentJournalASPNET {
         protected global::System.Web.UI.WebControls.View View1;
         
         /// <summary>
+        /// LogOutButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button LogOutButton;
+        
+        /// <summary>
         /// StudentAddButton control.
         /// </summary>
         /// <remarks>

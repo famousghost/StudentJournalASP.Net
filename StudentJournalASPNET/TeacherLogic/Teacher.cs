@@ -8,11 +8,11 @@ namespace StudentJournalASPNET.TeacherLogic
 
     interface TeacherMethods
     {
-        void AddMarkToStudent(int mark);
+        void AddMarkToStudent(int studentId, int subjectId, int markId);
 
-        void UpdateMarkToStudent(int mark);
+        void UpdateMarkToStudent(int studentId, int subjectId, int markId);
 
-        void DeleteMarkToStudent(int id);
+        void DeleteMarkToStudent(int studentId, int subjectId, int markId);
 
 
     }
@@ -32,5 +32,6 @@ namespace StudentJournalASPNET.TeacherLogic
             this.teachersSurname = teachersSurname;
             this.subjectId = subjectId;
         }
+        
     }
 }

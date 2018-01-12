@@ -137,6 +137,7 @@
   <ItemGroup>
     <Content Include="StudentList.aspx" />
     <Content Include="AdminPages.aspx" />
+    <Content Include="StudentPanel.aspx" />
     <Content Include="TeacherPanel.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -214,6 +215,13 @@
     </Compile>
     <Compile Include="AdminPages.aspx.designer.cs">
       <DependentUpon>AdminPages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StudentPanel.aspx.cs">
+      <DependentUpon>StudentPanel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StudentPanel.aspx.designer.cs">
+      <DependentUpon>StudentPanel.aspx</DependentUpon>
     </Compile>
     <Compile Include="TeacherLogic\Teacher.cs" />
     <Compile Include="TeacherLogic\TeacherLogic.cs" />

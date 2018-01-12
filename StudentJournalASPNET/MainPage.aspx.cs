@@ -31,16 +31,17 @@ namespace StudentJournalASPNET
                 }
                 else if (logInApi.GetLogInLevel() == 2)
                 {
-                    int teacherId = studentEntity.USERS.FirstOrDefault(t => t.userLogin == LoginTextBox.Text).TeacherId.Value;
+                    int teacherId = studentEntity.USERS.FirstOrDefault(t => (t.userLogin == LoginTextBox.Text && t.userPassword == PasswordTextBox.Text)).TeacherId.Value;
+                    Session.Remove("teacherId");
                     Session["teacherId"] = teacherId;
-                    Server.Transfer("TeacherPanel.aspx");
                     Response.Redirect("TeacherPanel.aspx");
                 }
                 else if (logInApi.GetLogInLevel() == 3)
                 {
-                    int teacherId = studentEntity.USERS.FirstOrDefault(t => t.userLogin == LoginTextBox.Text).TeacherId.Value;
-                    Application["teacherID"] = teacherId;
-                    Response.Redirect("");
+                    int studentId = studentEntity.USERS.FirstOrDefault(t => (t.userLogin == LoginTextBox.Text && t.userPassword == PasswordTextBox.Text)).StudentId.Value;
+                    Session.Remove("StudentId");
+                    Session["StudentId"] = studentId;
+                    Response.Redirect("StudentPanel.aspx");
                 }
             }
             else

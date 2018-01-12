@@ -137,5 +137,10 @@ namespace StudentJournalASPNET
             if (MultiView1.ActiveViewIndex >= 1)
                 MultiView1.ActiveViewIndex--;
         }
+
+        protected void LogOutButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("MainPage.aspx");
+        }
     }
 }

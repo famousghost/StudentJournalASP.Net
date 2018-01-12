@@ -21,17 +21,31 @@ namespace StudentJournalASPNET.SingInLogic
         {
             if (logIn.userName != "" && logIn.password != "")
             {
-                logIn.CheckUserName(studentModel.USERS.Where(u => u.userLogin == logIn.userName).FirstOrDefault().userLogin);
 
-                logIn.CheckPassword(studentModel.USERS.Where(u => u.userPassword == logIn.password).FirstOrDefault().userPassword);
+                try
+                {
+                    logIn.CheckUserName(studentModel.USERS.Where(u => (u.userLogin == logIn.userName && u.userPassword == logIn.password)).FirstOrDefault().userLogin);
+                    logIn.CheckPassword(studentModel.USERS.Where(u => (u.userLogin == logIn.userName && u.userPassword == logIn.password)).FirstOrDefault().userPassword);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine("nie poprawne dane");
+                }
                 if (logIn.GetLogInCheckerState() == LogInChecker.SuccesToLogIn)
                 {
                     int logInLevel;
                     using (StudentsEntitiesModel studentEntityModel = new StudentsEntitiesModel())
                     {
-                        logInLevel = studentEntityModel.USERS.Where(u => u.userLogin == logIn.userName).FirstOrDefault().LVL;
+                        try
+                        {
+                            logInLevel = studentEntityModel.USERS.Where(u => (u.userLogin == logIn.userName && u.userPassword == logIn.password)).FirstOrDefault().LVL;
+                            logIn.logInLevel = logInLevel;
+                        }
+                        catch(Exception)
+                        {
+                            Console.WriteLine("bład");
+                        }
                     }
-                    logIn.logInLevel = logInLevel;
 
                 }
                 

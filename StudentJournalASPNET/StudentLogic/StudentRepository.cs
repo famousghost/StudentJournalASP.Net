@@ -149,6 +149,16 @@ namespace StudentJournalASPNET
                 studentSql.ClassId = classId;
                 studentEntityModel.Student.Add(studentSql);
                 studentEntityModel.SaveChanges();
+
+                Model.USER users = new Model.USER();
+
+                users.userLogin = student.Name;
+                users.userPassword = student.Surname;
+                users.LVL = 3;
+                users.StudentId = studentEntityModel.Student.FirstOrDefault(x => x.Pesel == student.Pesel).id;
+
+                studentEntityModel.USERS.Add(users);
+                studentEntityModel.SaveChanges();
             }
 
 
